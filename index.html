@@ -61,7 +61,7 @@
             border: 1px solid rgba(255,255,255,0.2); 
         }
 
-        /* Updated Image Paths */
+        /* Image Paths */
         #seg1 { transform: rotate(0deg);   background-image: url('mega_dream.webp'); }
         #seg2 { transform: rotate(90deg);  background-image: url('mega_evolution.webp'); }
         #seg3 { transform: rotate(180deg); background-image: url('ninja_spinner.webp'); }
@@ -84,6 +84,16 @@
         
         button#spinBtn:hover { transform: scale(1.05); filter: brightness(1.2); }
         button#spinBtn:disabled { background: #555; cursor: not-allowed; }
+
+        /* Pricing Text Style */
+        .pricing-text {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #7bed9f;
+            text-align: center;
+            font-weight: 600;
+            text-shadow: 0 0 10px rgba(123, 237, 159, 0.3);
+        }
 
         /* Custom Modal Styles */
         #resultModal {
@@ -134,6 +144,11 @@
     </div>
 
     <button id="spinBtn" onclick="spin()">SPIN THE WHEEL</button>
+    
+    <div class="pricing-text">
+        JeffsCard Hub RTYH Wheel Spin $25 <br>
+        (can respin the wheel)
+    </div>
 
     <div class="overlay" id="overlay"></div>
     <div id="resultModal">
@@ -165,7 +180,6 @@
                 const landingDeg = (360 - (currentRotation % 360)) % 360; 
                 const winnerIndex = Math.floor(landingDeg / 90);
                 
-                // Set the winner name and show the custom box
                 winnerText.innerText = "🎉 " + options[winnerIndex];
                 modal.style.display = 'block';
                 overlay.style.display = 'block';
