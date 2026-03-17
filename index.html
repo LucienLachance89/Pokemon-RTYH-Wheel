@@ -61,11 +61,11 @@
             border: 1px solid rgba(255,255,255,0.2); 
         }
 
-        /* Matches your GitHub file names exactly */
-        #seg1 { transform: rotate(0deg);   background-color: #ff6b6b; background-image: url('./Mega-Dream-ex-Box'); }
-        #seg2 { transform: rotate(90deg);  background-color: #4ecdc4; background-image: url('./megaevolutionbuildbattle'); }
-        #seg3 { transform: rotate(180deg); background-color: #feca57; background-image: url('./Ninja Spinner'); }
-        #seg4 { transform: rotate(270deg); background-image: url('./destined-rivals-best-chase-cards-most-vauable-set-guide-header'); }
+        /* MATCHING YOUR NEW CLEAN FILENAMES */
+        #seg1 { transform: rotate(0deg);   background-image: url('mega_dream.webp'); }
+        #seg2 { transform: rotate(90deg);  background-image: url('mega_evolution.webp'); }
+        #seg3 { transform: rotate(180deg); background-image: url('ninja_spinner.webp'); }
+        #seg4 { transform: rotate(270deg); background-image: url('destin_rivals.jpg'); }
 
         button { 
             margin-top: 30px; 
@@ -103,5 +103,25 @@
     <script>
         const wheel = document.getElementById('wheel');
         const btn = document.getElementById('spinBtn');
+        // Updated labels to match your items
         const options = ["Mega Dream", "Mega Evolution", "Ninja Spinner", "Destin Rivals"];
-        let currentRotation =
+        let currentRotation = 0;
+
+        function spin() {
+            btn.disabled = true;
+            const extraSpins = (Math.floor(Math.random() * 5) + 5) * 360; 
+            const randomStop = Math.floor(Math.random() * 360);
+            currentRotation += extraSpins + randomStop;
+            
+            wheel.style.transform = `rotate(${currentRotation}deg)`;
+
+            setTimeout(() => {
+                btn.disabled = false;
+                const landingDeg = (360 - (currentRotation % 360)) % 360; 
+                const winnerIndex = Math.floor(landingDeg / 90);
+                alert("🎉 Result: " + options[winnerIndex]);
+            }, 4100);
+        }
+    </script>
+</body>
+</html>
