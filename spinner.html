@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interactive Spinner</title>
+    <style>
+        body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #1a1a1a; font-family: sans-serif; color: white; }
+        #canvas { margin: 20px; transition: transform 4s cubic-bezier(0.15, 0, 0.15, 1); }
+        .pointer { width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 30px solid #ff4757; position: absolute; top: calc(50% - 215px); z-index: 10; }
+        button { padding: 15px 40px; font-size: 20px; cursor: pointer; background: #2ed573; border: none; border-radius: 50px; color: white; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        button:active { transform: scale(0.95); }
+    </style>
+</head>
+<body>
+    <div class="pointer"></div>
+    <canvas id="canvas" width="400" height="400"></canvas>
+    <button onclick="spin()">SPIN THE WHEEL</button>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const options = ["Ninja Spinner", "Mega Dream", "Destin Rivals", "Mega Evolution"];
+        const colors = ["#ff6b6b", "#4ecdc4", "#45b7d1", "#96ceb4"];
+        let currentRotation = 0;
+
+        function drawWheel() {
+            const arc = (2 * Math.PI) / options.length;
+            options.forEach((opt, i) => {
+                ctx.beginPath();
+                ctx.fillStyle = colors[i];
+                ctx.moveTo(200, 200);
+                ctx.arc(200, 200, 200, i * arc, (i + 1) * arc);
+                ctx.fill();
+                ctx.save();
+                ctx.translate(200, 200);
+                ctx.rotate(i * arc + arc / 2);
+                ctx.fillStyle = "white";
+                ctx.font = "bold 16px Arial";
+                ctx.fillText(opt, 70, 5);
+                ctx.restore();
+            });
+        }
+
+        function spin() {
+            // Adds a random amount of full spins (5-10) plus a random landing spot
+            const extraSpins = (Math.floor(Math.random() * 5) + 5) * 360;
+            const randomStop = Math.floor(Math.random() * 360);
+            currentRotation += extraSpins + randomStop;
+            canvas.style.transform = `rotate(${currentRotation}deg)`;
+        }
+
+        drawWheel();
+    </script>
+</body>
+</html>
