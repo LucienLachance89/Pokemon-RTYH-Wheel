@@ -1,54 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Interactive Spinner</title>
+    <title>Pokémon Animated Wheel</title>
     <style>
-        body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #1a1a1a; font-family: sans-serif; color: white; }
-        #canvas { margin: 20px; transition: transform 4s cubic-bezier(0.15, 0, 0.15, 1); }
-        .pointer { width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 30px solid #ff4757; position: absolute; top: calc(50% - 215px); z-index: 10; }
-        button { padding: 15px 40px; font-size: 20px; cursor: pointer; background: #2ed573; border: none; border-radius: 50px; color: white; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-        button:active { transform: scale(0.95); }
+        body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #1a1a1a; font-family: 'Segoe UI', sans-serif; overflow: hidden; color: white;}
+        .wheel-outer { position: relative; width: 450px; height: 450px; }
+        .pointer { width: 0; height: 0; border-left: 20px solid transparent; border-right: 20px solid transparent; border-top: 40px solid #ff4757; position: absolute; top: -15px; left: 50%; transform: translateX(-50%); z-index: 100; filter: drop-shadow(0 0 10px rgba(0,0,0,0.5)); }
+        #wheel { width: 100%; height: 100%; border-radius: 50%; position: relative; overflow: hidden; transition: transform 4s cubic-bezier(0.15, 0, 0.15, 1); border: 10px solid #444; box-shadow: 0 0 30px rgba(0,0,0,0.5); background: #333; }
+        .segment { position: absolute; width: 50%; height: 50%; top: 0; left: 50%; transform-origin: 0% 100%; background-size: cover; background-position: center; border: 1px solid rgba(255,255,255,0.1); }
+        
+        /* Matching your specific file names and types */
+        #seg1 { transform: rotate(0deg);  background-image: url('mega_dream.webp'); }
+        #seg2 { transform: rotate(90deg); background-image: url('mega_evolution.webp'); }
+        #seg3 { transform: rotate(180deg); background-image: url('ninja_spinner.jpg'); }
+        #seg4 { transform: rotate(270deg); background-image: url('destin_rivals.jpg'); }
+
+        button { margin-top: 30px; padding: 15px 50px; font-size: 22px; cursor: pointer; background: #2ed573; border: none; border-radius: 50px; color: white; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: 0.2s; }
+        button:hover { transform: scale(1.05); }
+        button:disabled { background: #555; }
     </style>
 </head>
 <body>
-    <div class="pointer"></div>
-    <canvas id="canvas" width="400" height="400"></canvas>
-    <button onclick="spin()">SPIN THE WHEEL</button>
+    <div class="wheel-outer">
+        <div class="pointer"></div>
+        <div id="wheel">
+            <div class="segment" id="seg1"></div>
+            <div class="segment" id="seg2"></div>
+            <div class="segment" id="seg3"></div>
+            <div class="segment" id="seg4"></div>
+        </div>
+    </div>
+    <button id="spinBtn" onclick="spin()">SPIN THE WHEEL</button>
 
     <script>
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        const options = ["Ninja Spinner", "Mega Dream", "Destin Rivals", "Mega Evolution"];
-        const colors = ["#ff6b6b", "#4ecdc4", "#45b7d1", "#96ceb4"];
+        const wheel = document.getElementById('wheel');
+        const btn = document.getElementById('spinBtn');
+        const options = ["Mega Dream", "Mega Evolution", "Ninja Spinner", "Destin Rivals"];
         let currentRotation = 0;
 
-        function drawWheel() {
-            const arc = (2 * Math.PI) / options.length;
-            options.forEach((opt, i) => {
-                ctx.beginPath();
-                ctx.fillStyle = colors[i];
-                ctx.moveTo(200, 200);
-                ctx.arc(200, 200, 200, i * arc, (i + 1) * arc);
-                ctx.fill();
-                ctx.save();
-                ctx.translate(200, 200);
-                ctx.rotate(i * arc + arc / 2);
-                ctx.fillStyle = "white";
-                ctx.font = "bold 16px Arial";
-                ctx.fillText(opt, 70, 5);
-                ctx.restore();
-            });
-        }
-
         function spin() {
-            // Adds a random amount of full spins (5-10) plus a random landing spot
-            const extraSpins = (Math.floor(Math.random() * 5) + 5) * 360;
+            btn.disabled = true;
+            const extraSpins = (Math.floor(Math.random() * 5) + 5) * 360; 
             const randomStop = Math.floor(Math.random() * 360);
             currentRotation += extraSpins + randomStop;
-            canvas.style.transform = `rotate(${currentRotation}deg)`;
-        }
+            wheel.style.transform = `rotate(${currentRotation}deg)`;
 
-        drawWheel();
+            setTimeout(() => {
+                btn.disabled = false;
+                const landingDeg = (360 - (currentRotation % 360)) % 360; 
+                const winnerIndex = Math.floor(landingDeg / 90);
+                alert("🎉 Landed on: " + options[winnerIndex]);
+            }, 4100);
+        }
     </script>
 </body>
 </html>
