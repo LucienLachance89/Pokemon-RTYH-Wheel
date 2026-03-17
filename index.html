@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Pokémon Animated Wheel</title>
     <style>
         body { 
@@ -22,7 +23,6 @@
             height: 450px; 
         }
         
-        /* The Red Ticker at the top */
         .pointer { 
             width: 0; 
             height: 0; 
@@ -61,7 +61,7 @@
             border: 1px solid rgba(255,255,255,0.2); 
         }
 
-        /* Applying your images to the 4 slices */
+        /* Using your exact filenames */
         #seg1 { transform: rotate(0deg);   background-image: url('Mega-Dream-ex-Box.webp'); }
         #seg2 { transform: rotate(90deg);  background-image: url('megaevolutionbuildbattle.webp'); }
         #seg3 { transform: rotate(180deg); background-image: url('Ninja Spinner.jpg'); }
@@ -83,7 +83,6 @@
         }
         
         button:hover { transform: scale(1.05); filter: brightness(1.2); }
-        button:active { transform: scale(0.95); }
         button:disabled { background: #555; cursor: not-allowed; }
     </style>
 </head>
@@ -109,22 +108,16 @@
 
         function spin() {
             btn.disabled = true;
-            
-            // Spin at least 5 times (5*360) plus a random extra bit
             const extraSpins = (Math.floor(Math.random() * 5) + 5) * 360; 
             const randomStop = Math.floor(Math.random() * 360);
             currentRotation += extraSpins + randomStop;
             
             wheel.style.transform = `rotate(${currentRotation}deg)`;
 
-            // Wait 4 seconds (the length of the animation) then show the result
             setTimeout(() => {
                 btn.disabled = false;
-                
-                // Logic to find out which image is under the pointer
                 const landingDeg = (360 - (currentRotation % 360)) % 360; 
                 const winnerIndex = Math.floor(landingDeg / 90);
-                
                 alert("🎉 Result: " + options[winnerIndex]);
             }, 4100);
         }
